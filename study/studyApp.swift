@@ -22,6 +22,7 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 @main
 struct studyApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
+    
 
     var body: some Scene {
         WindowGroup {
