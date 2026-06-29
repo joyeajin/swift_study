@@ -66,13 +66,19 @@ struct SignUpView: View {
             return
         }
 
-        Auth.auth().createUser(withEmail: email, password: password) { _, error in
+        Auth.auth().createUser(withEmail: email, password: password) { result, error in
             if let error = error {
                 message = "회원가입 실패: \(error.localizedDescription)"
             } else {
-                message = "회원가입 성공!"
+                Auth.auth().currentUser?.sendEmailVerification{ error in
+                    if let error = error{
+                        message = "인증 메일 전송 실패 : \(error.localizedDescription)"
+                    }else{
+                        message = "회원가입 성공! 인증메일 보냈음."
+                    }
+                }
                 
-                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
                     dismiss()
                 }
             }
